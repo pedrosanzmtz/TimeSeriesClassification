@@ -1,0 +1,7 @@
+penalty,C,solver,grades,inventories
+l2,0.3,lbfgs,0.7730,0.6865
+l2,0.3,newton-cg,0.7730,0.6865
+l2,0.5,lbfgs,0.7730,0.6856
+l2,0.5,newton-cg,0.7730,0.6856
+l2,1,lbfgs,0.7791,0.6856
+l2,1,newton-cg,0.7791,0.6856

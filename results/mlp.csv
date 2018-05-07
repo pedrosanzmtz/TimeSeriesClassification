@@ -1,0 +1,9 @@
+hidden_layers_sizes,activation,solver,grades,inventories
+10,logistic,sgd,0.46626,0.64109
+10,logistic,adam,0.74233,0.69307
+10_5,logistic,sgd,0.53374,0.53548
+10_5,logistic,adam,0.75460,0.69224
+10,relu,sgd,0.66871,0.67987
+10,relu,adam,0.65644,0.69307
+10_5,relu,sgd,0.74847,0.66584
+10,relu,adam,0.76687,0.70627
