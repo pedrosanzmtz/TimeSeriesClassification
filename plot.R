@@ -1,7 +1,6 @@
 library(ggplot2)
 
 df <- read.csv('results/grades.csv')
-#png('results/gradesall.eps')
 ggplot(df, aes(x=model, y=accuracy, fill=slice)) + geom_bar(stat='identity', position=position_dodge()) + theme_minimal() + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
 ggsave("results/gradesall.eps")
 
@@ -32,7 +31,6 @@ ggplot(d, aes(x=model, y=accuracy, fill=model)) + geom_bar(stat='identity', posi
 
 df <- read.csv('results/inventories.csv')
 
-#png('results/inventoriesall.png')
 ggplot(df, aes(x=model, y=accuracy, fill=slice)) + geom_bar(stat='identity', position=position_dodge()) + theme_minimal() + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
 ggsave("results/inventoriesall.eps")
 
