@@ -88,6 +88,7 @@ def run_pipeline(X, y, cv, out, sub, name):
     # Fit the grid search objects
     (grids, grid_dict) = generate_pipeline(cv, jobs=-1, random_state=42)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+    y_test = y_test.values
     print('Performing model optimizations...')
     best_acc = 0.0
     best_clf = 0
@@ -95,6 +96,8 @@ def run_pipeline(X, y, cv, out, sub, name):
     for idx, gs in enumerate(grids):
         gs_out_name = grid_dict[idx] + '_' + name + '.csv'
         gs_out = open(gs_out_name, 'w')
+        gs_out_count_name = "count_" + gs_out_name
+        gs_out_count = open(gs_out_count_name, "w")
         print('\nEstimator: %s' % grid_dict[idx])	
         # Fit grid search	
         toi = time()
@@ -123,12 +126,25 @@ def run_pipeline(X, y, cv, out, sub, name):
         print('Best training accuracy: %.3f' % gs.best_score_)
         # Predict on test data with best params
         y_pred = gs.predict(X_test)
+        # Count false/positive for each class
+        gs_out_count.write("Class,Correct,incorrect\n")
+        for i in np.unique(y_pred):
+            i_test = y_test == i
+            i_pred = y_pred == i
+            i_correct = i_test == i_pred
+            i_correct=i_correct[i_pred]
+            i_incorrect = i_correct.shape[0] - np.sum(i_correct)
+            gs_out_count.write(str(i) + "," + str(np.sum(i_correct)) + "," + str(i_incorrect) + "\n")
+        gs_out_count.close()
+
         # Test data accuracy of model with best params
         acc = '%.3f' % accuracy_score(y_test, y_pred)
+        total = str(y_test.shape[0])
+        acc_n = str(int(y_test.shape[0] * float(acc)))
         print('Test set accuracy score for best params:', acc)
         # Track best (highest test accuracy) model
         # print('Test set errror score for best params: %.3f ' % accuracy_score(y_test, y_pred))
-        out.write(grid_dict[idx] + ',' + sub + ',' + acc + '\n')
+        out.write(grid_dict[idx] + ',' + sub + ',' + acc + ',' + acc_n + ',' + total + '\n')
 
 def preprocess(X, na_values):
     imp = Imputer(missing_values=na_values, strategy='mean', axis=1)
