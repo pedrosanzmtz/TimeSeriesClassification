@@ -138,13 +138,15 @@ def run_pipeline(X, y, cv, out, sub, name):
         gs_out_count.close()
 
         # Test data accuracy of model with best params
-        acc = '%.3f' % accuracy_score(y_test, y_pred)
+        acc = '%.2f' % accuracy_score(y_test, y_pred)
+        mse = '%.3f' % mean_squared_error(y_test, y_pred)
         total = str(y_test.shape[0])
         acc_n = str(int(y_test.shape[0] * float(acc)))
         print('Test set accuracy score for best params:', acc)
+        print('Test set mse score for best params:', mse)
         # Track best (highest test accuracy) model
         # print('Test set errror score for best params: %.3f ' % accuracy_score(y_test, y_pred))
-        out.write(grid_dict[idx] + ',' + sub + ',' + acc + ',' + acc_n + ',' + total + '\n')
+        out.write(grid_dict[idx] + ',' + sub + ',' + acc + ',' + mse + '\n')
 
 def preprocess(X, na_values):
     imp = Imputer(missing_values=na_values, strategy='mean', axis=1)
