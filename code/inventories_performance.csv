@@ -1,4 +1,4 @@
-model,slice,accuracy
+model,slice,acc
 LR,1M,0.72,0.275
 RF,1M,0.78,0.220
 SVM,1M,0.73,0.267

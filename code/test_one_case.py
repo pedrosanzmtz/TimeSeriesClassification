@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
     # for i in range(2, 6):
     #     cols = ['c1', 'mc']
-    #     sub = 'M_T' + str(i)
+    #     sub = str(i) + "H"
     #     for j in range(2, i+1):
     #         cols.append('c' + str(j))
     #     sub_X = preprocess(X[cols], na_values)
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     # na_index = X.isnull().all(axis=1)
 
     # out = open('inventories_performance.csv', 'w')
-    # out.write('model,slice,accuracy\n')
+    # out.write('model,slice,acc,mse\n')
 
     # n_months = 6
     # name = 'inventories'
@@ -71,7 +71,7 @@ if __name__ == '__main__':
     # For diseases example
 
     out = open('diseases_performance.csv', 'w')
-    out.write('model,slice,accuracy\n')
+    out.write('model,slice,acc,mse\n')
 
     df = pd.read_csv("diseases.csv")
     X = df.iloc[:, :-1]

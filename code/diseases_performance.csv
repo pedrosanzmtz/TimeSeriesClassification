@@ -1,4 +1,4 @@
-model,slice,accuracy
+model,slice,acc,mse
 LR,1W,0.94,0.062
 RF,1W,0.98,0.024
 SVM,1W,0.94,0.062
