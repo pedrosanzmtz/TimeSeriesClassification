@@ -1,79 +1,27 @@
 library(ggplot2)
 
-df <- read.csv('results/grades.csv')
-#png('results/gradesall.eps')
-ggplot(df, aes(x=model, y=accuracy, fill=slice)) + geom_bar(stat='identity', position=position_dodge()) + theme_minimal() + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
-ggsave("results/gradesall.eps")
+cases <- c("grades", "inventories", "diseases")
+labels <- c("H", "M", "W")
+jumps_case <- list(2:5, 1:6, 1:6)
+format <- ".eps"
 
-d <- df[df$slice == 'M_T2', ]
-
-png('results/grades_m_t2.png')
-ggplot(d, aes(x=model, y=accuracy, fill=model)) + geom_bar(stat='identity', position=position_dodge()) + scale_fill_brewer(palette="YlGnBu") + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
-
-d <- df[df$slice == 'M_T3', ]
-
-png('results/grades_m_t3.png')
-ggplot(d, aes(x=model, y=accuracy, fill=model)) + geom_bar(stat='identity', position=position_dodge()) + scale_fill_brewer(palette="YlGnBu") + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
-
-
-d <- df[df$slice == 'M_T4', ]
-
-png('results/grades_m_t4.png')
-ggplot(d, aes(x=model, y=accuracy, fill=model)) + geom_bar(stat='identity', position=position_dodge()) + scale_fill_brewer(palette="YlGnBu") + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
-
-
-d <- df[df$slice == 'M_T5', ]
-
-png('results/grades_m_t5.png')
-ggplot(d, aes(x=model, y=accuracy, fill=model)) + geom_bar(stat='identity', position=position_dodge()) + scale_fill_brewer(palette="YlGnBu") + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
-
-#######################################################
-
-df <- read.csv('results/inventories.csv')
-
-#png('results/inventoriesall.png')
-ggplot(df, aes(x=model, y=accuracy, fill=slice)) + geom_bar(stat='identity', position=position_dodge()) + theme_minimal() + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20)) + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
-ggsave("results/inventoriesall.eps")
-
-
-d <- df[df$slice == '1M', ]
-
-png('results/intentories_m_1M.png')
-ggplot(d, aes(x=model, y=accuracy, fill=model)) + geom_bar(stat='identity', position=position_dodge()) + scale_fill_brewer(palette="YlGnBu") + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
-
-
-d <- df[df$slice == '2M', ]
-
-png('results/intentories_m_2M.png')
-ggplot(d, aes(x=model, y=accuracy, fill=model)) + geom_bar(stat='identity', position=position_dodge()) + scale_fill_brewer(palette="YlGnBu") + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
-
-
-d <- df[df$slice == '3M', ]
-
-png('results/intentories_m_3M.png')
-ggplot(d, aes(x=model, y=accuracy, fill=model)) + geom_bar(stat='identity', position=position_dodge()) + scale_fill_brewer(palette="YlGnBu") + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
-
-
-d <- df[df$slice == '4M', ]
-
-png('results/intentories_m_4M.png')
-ggplot(d, aes(x=model, y=accuracy, fill=model)) + geom_bar(stat='identity', position=position_dodge()) + scale_fill_brewer(palette="YlGnBu") + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
-
-
-d <- df[df$slice == '5M', ]
-
-png('results/intentories_m_5M.png')
-ggplot(d, aes(x=model, y=accuracy, fill=model)) + geom_bar(stat='identity', position=position_dodge()) + scale_fill_brewer(palette="YlGnBu") + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
-
-
-d <- df[df$slice == '6M', ]
-
-png('results/intentories_m_6M.png')
-ggplot(d, aes(x=model, y=accuracy, fill=model)) + geom_bar(stat='identity', position=position_dodge()) + scale_fill_brewer(palette="YlGnBu") + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
-
-
-
-df <- read.csv('results/inventories.csv')
-
-png('inventories.png')
-ggplot(df, aes(x=slice, y=accuracy, fill=model)) + geom_bar(stat='identity', position=position_dodge()) +theme_minimal()
+for(i in 1:length(cases))
+{
+    case <- cases[i]
+    jumps <- jumps_case[i]
+    label <- labels[i]
+    dir_case <- paste("results/", case, "_m_", sep="")
+    csv_file <- paste("results/", case, ".csv", sep="")
+    df <- read.csv(csv_file)
+    all_image <- paste("results/", case, "_acc", format, sep="")
+    ggplot(df, aes(x=model, y=acc, fill=slice)) + geom_bar(stat='identity', position=position_dodge()) + scale_fill_brewer(palette="YlGnBu") + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
+    ggsave(all_image)
+    for(i in jumps[[1]])
+    {
+        col <- paste(i, label, sep="")
+        image_name <- paste(dir_case, i, label, format, sep="")
+        sub_df <- df[df$slice == col, ]
+        ggplot(sub_df, aes(x=model, y=acc, fill=model)) + geom_bar(stat='identity', position=position_dodge()) + scale_fill_brewer(palette="YlGnBu") + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
+        ggsave(image_name)
+    }
+}
