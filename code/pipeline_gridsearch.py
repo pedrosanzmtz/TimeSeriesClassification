@@ -19,58 +19,67 @@ from time import time
 from scipy import stats
 import pywt
 
-def generate_pipeline(cv, jobs=-1, random_state=42):
-    # Construct some pipelines
-    pipe_lr = Pipeline([('scl', StandardScaler()),
+
+def get_pipes():
+    pipes = dict()
+    pipes["lr"] = Pipeline([('scl', StandardScaler()),
                         ('clf', LogisticRegression(random_state=random_state))])
 
 
-    pipe_rf = Pipeline([('scl', StandardScaler()),
+    pipes["rf"] = Pipeline([('scl', StandardScaler()),
                         ('clf', RandomForestClassifier(random_state=random_state))])
 
 
-    pipe_svm = Pipeline([('scl', StandardScaler()),
+    pipes["svm"] = Pipeline([('scl', StandardScaler()),
                         ('clf', svm.SVC(random_state=random_state))])
 
 
-    pipe_mlp = Pipeline([('scl', StandardScaler()),
+    pipes["mlp"] = Pipeline([('scl', StandardScaler()),
                         ('clf', MLPClassifier(random_state=random_state))])
-    
+    return pipes
 
-    grid_params_lr = [{'clf__penalty': ['l2'],
+def get_grids():
+    grids = dict()
+    grids["lr"] = [{'clf__penalty': ['l2'],
                         'clf__C': [0.3, 0.5, 1],
                        'clf__solver': ['lbfgs', 'newton-cg']}] 
 
-    grid_params_rf = [{'clf__criterion': ['gini', 'entropy'],
+    grids["rf"] = [{'clf__criterion': ['gini', 'entropy'],
                        'clf__n_estimators': [10, 20, 30]}]
 
-    grid_params_svm = [{'clf__kernel': ['sigmoid', 'rbf'], 
+    grids["svm"] = [{'clf__kernel': ['sigmoid', 'rbf'], 
                         'clf__C': [0.3, 0.5, 1]}]
 
-    grid_params_mlp = [{'clf__activation': ['logistic', 'relu'],
+    grids["mlp"] = [{'clf__activation': ['logistic', 'relu'],
                         'clf__solver': ['sgd', 'adam'],
                         'clf__hidden_layer_sizes': [(10, ), (10, 5)]}]
+    return grids
+
+def generate_pipeline(cv, jobs=-1, random_state=42):
+    # Construct some pipelines
+    pipes = get_pipes()        
+    grids = get_grids()
     
     # Construct grid searches
-    gs_lr = GridSearchCV(estimator=pipe_lr,
-                         param_grid=grid_params_lr,
+    gs_lr = GridSearchCV(estimator=pipes["lr"],
+                         param_grid=grid["lr"],
                          scoring='accuracy',
                          cv=cv) 
 
-    gs_rf = GridSearchCV(estimator=pipe_rf,
-                         param_grid=grid_params_rf,
+    gs_rf = GridSearchCV(estimator=pipes["rf"],
+                         param_grid=grids["rf"],
                          scoring='accuracy',
                          cv=cv, 
                          n_jobs=jobs)
 
-    gs_svm = GridSearchCV(estimator=pipe_svm,
-                          param_grid=grid_params_svm,
+    gs_svm = GridSearchCV(estimator=pipes["svm"],
+                          param_grid=grids["svm"],
                           scoring='accuracy',
                           cv=cv,
                           n_jobs=jobs)
 
-    gs_mlp = GridSearchCV(estimator=pipe_mlp,
-                          param_grid=grid_params_mlp,
+    gs_mlp = GridSearchCV(estimator=pipes["mlp"],
+                          param_grid=grids["mlp"],
                           scoring='accuracy',
                           cv=cv)
 
@@ -104,13 +113,6 @@ def run_pipeline(X, y, cv, out, sub, name):
         gs.fit(X_train, y_train)
         tof = time() - toi 
         # Best params
-        print('Time running:', tof)
-        
-        # print('Params Train:')
-        # means = gs.cv_results_['mean_train_score']
-        # stds = gs.cv_results_['std_train_score']
-        # for mean, std, params in zip(means, stds, gs.cv_results_['params']):
-        #     print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
         print('Params Test:')
         means = gs.cv_results_['mean_test_score']
         stds = gs.cv_results_['std_test_score']
@@ -132,7 +134,7 @@ def run_pipeline(X, y, cv, out, sub, name):
             i_test = y_test == i
             i_pred = y_pred == i
             i_correct = i_test == i_pred
-            i_correct=i_correct[i_pred]
+            i_correct = i_correct[i_pred]
             i_incorrect = i_correct.shape[0] - np.sum(i_correct)
             gs_out_count.write(str(i) + "," + str(np.sum(i_correct)) + "," + str(i_incorrect) + "\n")
         gs_out_count.close()
@@ -145,7 +147,6 @@ def run_pipeline(X, y, cv, out, sub, name):
         print('Test set accuracy score for best params:', acc)
         print('Test set mse score for best params:', mse)
         # Track best (highest test accuracy) model
-        # print('Test set errror score for best params: %.3f ' % accuracy_score(y_test, y_pred))
         out.write(grid_dict[idx] + ',' + sub + ',' + acc + ',' + mse + '\n')
 
 def preprocess(X, na_values):
