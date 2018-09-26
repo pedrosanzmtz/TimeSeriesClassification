@@ -116,28 +116,16 @@ def run_pipeline(X, y, cv, out, sub, name):
         print('Params Test:')
         means = gs.cv_results_['mean_test_score']
         stds = gs.cv_results_['std_test_score']
-        for mean, std, params in zip(means, stds, gs.cv_results_['params']):
-            print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
-            for p in params:
-                gs_out.write(str(params[p]) + ',')
-            gs_out.write(str(mean) + '\n')
-        gs_out.close()
+        
+        get_results(means, stds, gs, gs_out)
         
         print('Best params: %s' % gs.best_params_)
         # Best training data accuracy
         print('Best training accuracy: %.3f' % gs.best_score_)
         # Predict on test data with best params
         y_pred = gs.predict(X_test)
-        # Count false/positive for each class
-        gs_out_count.write("Class,Correct,incorrect\n")
-        for i in np.unique(y_pred):
-            i_test = y_test == i
-            i_pred = y_pred == i
-            i_correct = i_test == i_pred
-            i_correct = i_correct[i_pred]
-            i_incorrect = i_correct.shape[0] - np.sum(i_correct)
-            gs_out_count.write(str(i) + "," + str(np.sum(i_correct)) + "," + str(i_incorrect) + "\n")
-        gs_out_count.close()
+
+        count_results(gs_out_count, y_pred, y_test)
 
         # Test data accuracy of model with best params
         acc = '%.2f' % accuracy_score(y_test, y_pred)
@@ -148,6 +136,7 @@ def run_pipeline(X, y, cv, out, sub, name):
         print('Test set mse score for best params:', mse)
         # Track best (highest test accuracy) model
         out.write(grid_dict[idx] + ',' + sub + ',' + acc + ',' + mse + '\n')
+
 
 def preprocess(X, na_values):
     imp = Imputer(missing_values=na_values, strategy='mean', axis=1)
@@ -160,6 +149,28 @@ def preprocess(X, na_values):
     X_stats = stats.describe(X, axis=1)
 
     X = pd.DataFrame({'min': X_stats.minmax[0], 'max': X_stats.minmax[1], 
-                      'kurtosis': X_stats.kurtosis, 'skwness': X_stats.skewness, 
+                      'kurtosis': X_stats.kurtosis, 'skewness': X_stats.skewness, 
                       'variance': X_stats.variance, 'mean': X_stats.mean})
     return X
+
+
+def count_results(gs_out_count, y_pred, y_test):
+    # Count false/positive for each class
+    gs_out_count.write("Class,Correct,incorrect\n")
+    for i in np.unique(y_pred):
+        i_test = y_test == i
+        i_pred = y_pred == i
+        i_correct = i_test == i_pred
+        i_correct = i_correct[i_pred]
+        i_incorrect = i_correct.shape[0] - np.sum(i_correct)
+        gs_out_count.write(str(i) + "," + str(np.sum(i_correct)) + "," + str(i_incorrect) + "\n")
+    gs_out_count.close()
+
+
+def get_results(means, stds, gs, gs_out):
+    for mean, std, params in zip(means, stds, gs.cv_results_['params']):
+        print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
+        for p in params:
+            gs_out.write(str(params[p]) + ',')
+        gs_out.write(str(mean) + '\n')
+    gs_out.close()
