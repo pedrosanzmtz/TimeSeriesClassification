@@ -20,7 +20,7 @@ from scipy import stats
 import pywt
 
 
-def get_pipes():
+def get_pipes(random_state):
     pipes = dict()
     pipes["lr"] = Pipeline([('scl', StandardScaler()),
                         ('clf', LogisticRegression(random_state=random_state))])
@@ -57,12 +57,12 @@ def get_grids():
 
 def generate_pipeline(cv, jobs=-1, random_state=42):
     # Construct some pipelines
-    pipes = get_pipes()        
+    pipes = get_pipes(random_state)        
     grids = get_grids()
     
     # Construct grid searches
     gs_lr = GridSearchCV(estimator=pipes["lr"],
-                         param_grid=grid["lr"],
+                         param_grid=grids["lr"],
                          scoring='accuracy',
                          cv=cv) 
 
@@ -103,6 +103,7 @@ def run_pipeline(X, y, cv, out, sub, name):
     best_clf = 0
     best_gs = ''
     for idx, gs in enumerate(grids):
+        initial_time = time()
         gs_out_name = grid_dict[idx] + '_' + name + '.csv'
         gs_out = open(gs_out_name, 'w')
         gs_out_count_name = "count_" + gs_out_name
@@ -132,10 +133,12 @@ def run_pipeline(X, y, cv, out, sub, name):
         mse = '%.3f' % mean_squared_error(y_test, y_pred)
         total = str(y_test.shape[0])
         acc_n = str(int(y_test.shape[0] * float(acc)))
+        total_time = '%.2f' % (time() - initial_time)
         print('Test set accuracy score for best params:', acc)
         print('Test set mse score for best params:', mse)
+        print('Total time:', total_time)
         # Track best (highest test accuracy) model
-        out.write(grid_dict[idx] + ',' + sub + ',' + acc + ',' + mse + '\n')
+        out.write(grid_dict[idx] + ',' + sub + ',' + acc + ',' + mse + ',' + total_time + '\n')
 
 
 def preprocess(X, na_values):

@@ -11,7 +11,7 @@ if __name__ == '__main__':
     y = df.iloc[:, -1]
 
     out = open('grades_performance.csv', 'w')
-    out.write('model,slice,acc,mse\n')
+    out.write('model,slice,acc,mse,time\n')
 
     name = 'grades'
     na_values = 'NaN'

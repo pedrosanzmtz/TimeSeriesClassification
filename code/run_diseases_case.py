@@ -7,7 +7,7 @@ from pipeline_gridsearch import *
 
 if __name__ == '__main__':    
     out = open('diseases_performance.csv', 'w')
-    out.write('model,slice,acc,mse\n')
+    out.write('model,slice,acc,mse,time\n')
 
     df = pd.read_csv("diseases.csv")
     X = df.iloc[:, :-1]

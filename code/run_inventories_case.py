@@ -22,7 +22,7 @@ if __name__ == '__main__':
     na_index = X.isnull().all(axis=1)
 
     out = open('inventories_performance.csv', 'w')
-    out.write('model,slice,acc,mse\n')
+    out.write('model,slice,acc,mse,time\n')
 
     n_months = 6
     name = 'inventories'
