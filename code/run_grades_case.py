@@ -5,11 +5,16 @@ import pandas as pd
 import numpy as np
 from pipeline_gridsearch import *
 
-if __name__ == '__main__':
+
+def get_data():
     df = pd.read_csv('grades.csv')
     X = df.iloc[:, :-1]
     y = df.iloc[:, -1]
+    return X, y
 
+
+def main():
+    X, y = get_data()
     out = open('grades_performance.csv', 'w')
     out.write('model,slice,acc,mse,time\n')
 
@@ -24,3 +29,8 @@ if __name__ == '__main__':
         sub_X = preprocess(X[cols], na_values)
         run_pipeline(sub_X, y, 10, out, sub, name)
     out.close()
+
+
+if __name__ == '__main__':
+   main()
+

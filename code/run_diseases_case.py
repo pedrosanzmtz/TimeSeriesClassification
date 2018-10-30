@@ -5,10 +5,8 @@ import pandas as pd
 import numpy as np
 from pipeline_gridsearch import *
 
-if __name__ == '__main__':    
-    out = open('diseases_performance.csv', 'w')
-    out.write('model,slice,acc,mse,time\n')
 
+def get_data():
     df = pd.read_csv("diseases.csv")
     X = df.iloc[:, :-1]
     X_true = X.sum(axis=1) > 0
@@ -16,7 +14,13 @@ if __name__ == '__main__':
     le = preprocessing.LabelEncoder()
     y = pd.Series(le.fit(df['class']).transform(df['class']))
     y = y[X_true]
+    return X, y
 
+
+def main():
+    X, y = get_data()
+    out = open('diseases_performance.csv', 'w')
+    out.write('model,slice,acc,mse,time\n')
     n_weeks = 6
     name = 'diseases'
     na_values = np.nan
@@ -30,3 +34,7 @@ if __name__ == '__main__':
         print("suby shape:", y.shape)
         sub_X = preprocess(sub_X, na_values)
         run_pipeline(sub_X, sub_y, 10, out, sub, name)
+
+
+if __name__ == '__main__':    
+    main()

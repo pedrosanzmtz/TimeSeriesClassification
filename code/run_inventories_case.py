@@ -5,7 +5,8 @@ import pandas as pd
 import numpy as np
 from pipeline_gridsearch import *
 
-if __name__ == '__main__':
+
+def get_data():
     df = pd.read_csv('inventariosActivos.csv', index_col=0, na_values=['NaN', 'NA'])
     # remove client column
     df = df.drop(['client'], axis=1)
@@ -18,7 +19,12 @@ if __name__ == '__main__':
     X = X.iloc[:, 3:-3]
     
     X = X.dropna(how='all', axis=0)
+    return X, y
 
+
+def main():
+    X, y = get_data()
+    
     na_index = X.isnull().all(axis=1)
 
     out = open('inventories_performance.csv', 'w')
@@ -38,4 +44,8 @@ if __name__ == '__main__':
         run_pipeline(sub_X, sub_y, 10, out, sub, name)
 
     out.close()
+
+
+if __name__ == '__main__':
+    main()
     
