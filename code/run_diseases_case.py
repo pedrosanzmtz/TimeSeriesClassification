@@ -7,7 +7,7 @@ from pipeline_gridsearch import *
 
 
 def get_data():
-    df = pd.read_csv("diseases.csv")
+    df = pd.read_csv("../data/diseases.csv")
     X = df.iloc[:, :-1]
     X_true = X.sum(axis=1) > 0
     X = X[X_true]
@@ -19,7 +19,7 @@ def get_data():
 
 def main():
     X, y = get_data()
-    out = open('diseases_performance.csv', 'w')
+    out = open('../results/performances/diseases_performance.csv', 'w')
     out.write('model,slice,acc,mse,time\n')
     n_weeks = 6
     name = 'diseases'

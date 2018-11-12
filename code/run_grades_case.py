@@ -7,7 +7,7 @@ from pipeline_gridsearch import *
 
 
 def get_data():
-    df = pd.read_csv('grades.csv')
+    df = pd.read_csv('../data/grades.csv')
     X = df.iloc[:, :-1]
     y = df.iloc[:, -1]
     return X, y
@@ -15,7 +15,7 @@ def get_data():
 
 def main():
     X, y = get_data()
-    out = open('grades_performance.csv', 'w')
+    out = open('../results/performances/grades_performance.csv', 'w')
     out.write('model,slice,acc,mse,time\n')
 
     name = 'grades'

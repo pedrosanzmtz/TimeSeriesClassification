@@ -104,9 +104,9 @@ def run_pipeline(X, y, cv, out, sub, name):
     best_gs = ''
     for idx, gs in enumerate(grids):
         initial_time = time()
-        gs_out_name = grid_dict[idx] + '_' + name + '.csv'
+        gs_out_name = '../results/models/' + grid_dict[idx] + '_' + name + '.csv'
         gs_out = open(gs_out_name, 'w')
-        gs_out_count_name = "count_" + gs_out_name
+        gs_out_count_name = "../results/counts/count_" + grid_dict[idx] + '_' + name + '.csv'
         gs_out_count = open(gs_out_count_name, "w")
         print('\nEstimator: %s' % grid_dict[idx])	
         # Fit grid search	

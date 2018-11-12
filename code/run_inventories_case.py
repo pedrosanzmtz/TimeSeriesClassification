@@ -7,7 +7,7 @@ from pipeline_gridsearch import *
 
 
 def get_data():
-    df = pd.read_csv('inventariosActivos.csv', index_col=0, na_values=['NaN', 'NA'])
+    df = pd.read_csv('../data/inventariosActivos.csv', index_col=0, na_values=['NaN', 'NA'])
     # remove client column
     df = df.drop(['client'], axis=1)
 
@@ -27,7 +27,7 @@ def main():
     
     na_index = X.isnull().all(axis=1)
 
-    out = open('inventories_performance.csv', 'w')
+    out = open('../results/performances/inventories_performance.csv', 'w')
     out.write('model,slice,acc,mse,time\n')
 
     n_months = 6
