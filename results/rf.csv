@@ -1,7 +1,0 @@
-criterion,n_estimators,grades,inventories
-gini,10,0.76687,0.67904
-gini,20,0.77914,0.68812
-gini,30,0.77914,0.68894
-entropy,10,0.76687,0.67574
-entropy,20,0.76687,0.68234
-entropy,30,0.77914,0.68894
