@@ -10,10 +10,10 @@ for(i in 1:length(cases))
     case <- cases[i]
     jumps <- jumps_case[i]
     label <- labels[i]
-    dir_case <- paste("results/", case, "_m_", sep="")
-    csv_file <- paste("results/", case, ".csv", sep="")
+    dir_case <- paste("../plots/models/", case, "_m_", sep="")
+    csv_file <- paste("../results/performances/", case, "_performance.csv", sep="")
     df <- read.csv(csv_file)
-    all_image <- paste("results/", case, "_acc", format, sep="")
+    all_image <- paste("../plots/performances/", case, "_acc", format, sep="")
     ggplot(df, aes(x=model, y=acc, fill=slice)) + geom_bar(stat='identity', position=position_dodge()) + scale_fill_brewer(palette="YlGnBu") + theme(axis.title.x = element_text(size=20), axis.title.y = element_text(size=20), axis.text.x = element_text(size=15), axis.text.y = element_text(size=15), legend.text = element_text(size=15), legend.title = element_text(size=20))
     ggsave(all_image)
     for(i in jumps[[1]])
