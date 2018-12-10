@@ -1,6 +1,6 @@
-# Time Series' Clustering and Classification
+# Time Series Classification
 
-Clustering and Classification on time series from different sources using machine learning algorithms. This project will contain code, files and notebook to use as my thesis.
+Classification on time series from different sources using machine learning algorithms. This project will contain code, files and notebook to use as my thesis.
 
 ## System requirements
 
